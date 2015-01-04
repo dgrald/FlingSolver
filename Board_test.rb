@@ -21,21 +21,21 @@ class MyTest < MiniTest::Unit::TestCase
 
   def test_ball_immediately_right
     b = Board.new([Furball.new(2, 2), Furball.new(1, 2)])
-    assert_equal(true, b.isBallImmediatelyAdjacent?(Furball.new(1, 2), Directions::RIGHT), b.to_s)
+    assert_equal(true, b.isBallImmediatelyAdjacent?(Furball.new(1, 2), Directions::RIGHT), b)
   end
 
   def test_ball_left
     ball1 = Furball.new(2, 1)
     ball2 = Furball.new(4, 1)
     b = Board.new([ball1, ball2])
-    assert_equal(true, b.isBallRight?(ball1, ball2), b.to_s)
+    assert_equal(true, b.isBallRight?(ball1, ball2), b)
   end
 
   def test_ball_right
     left = Furball.new(2, 1)
     right = Furball.new(4, 1)
     b = Board.new([left, right])
-    assert_equal(true, b.isBallRight?(left, right), b.to_s)
+    assert_equal(true, b.isBallRight?(left, right), b)
   end
 
   def test_possible_moves
@@ -50,7 +50,7 @@ class MyTest < MiniTest::Unit::TestCase
 
     assert(possibleMoves.include?(move1))
     assert(possibleMoves.include?(move2))
-    assert_equal(2, possibleMoves.size)
+    assert_equal(2, possibleMoves.size, possibleMoves)
   end
 
   def test_possible_moves_ball_in_way
@@ -97,7 +97,7 @@ class MyTest < MiniTest::Unit::TestCase
     assert(possibleMoves.include?(move4))
     assert(possibleMoves.include?(move5))
     assert(possibleMoves.include?(move6))
-    assert_equal(6, possibleMoves.size)
+    assert_equal(6, possibleMoves.size, possibleMoves)
 
   end
 
@@ -127,11 +127,11 @@ class MyTest < MiniTest::Unit::TestCase
     ball2 = Furball.new(3, 1)
 
     b = Board.new([ball1, ball2])
-    b.move(ball1, Directions::RIGHT)
+    newBoard = b.move(ball1, Directions::RIGHT)
 
     exp = Board.new([Furball.new(2, 1)])
 
-    assert_equal(exp, b)
+    assert_equal(exp, newBoard, newBoard)
 
   end
 
@@ -141,11 +141,11 @@ class MyTest < MiniTest::Unit::TestCase
     ball3 = Furball.new(2, 4)
 
     b = Board.new([ball1, ball2, ball3])
-    b.move(ball1, Directions::UP)
+    newBoard = b.move(ball1, Directions::UP)
 
     exp = Board.new([Furball.new(2, 2), Furball.new(2, 3)])
 
-    assert_equal(exp, b)
+    assert_equal(exp, newBoard, newBoard)
 
   end
 
@@ -157,7 +157,31 @@ class MyTest < MiniTest::Unit::TestCase
     solver = FlingSolver.new(b)
     solve = solver.solve
 
-    assert_equal(1, solve.size)
+    assert_equal(2, solve.size, solve)
   end
 
+  def test_solve_no_solution
+    ball1 = Furball.new(1,1)
+    ball2 = Furball.new(4,1)
+    ball3 = Furball.new(1,4)
+
+    b = Board.new([ball1, ball2, ball3])
+    solver = FlingSolver.new(b)
+    solve = solver.solve
+
+    assert_nil(solve, solve)
+  end
+
+  def test_solve2
+    ball1 = Furball.new(1,1)
+    ball2 = Furball.new(1,3)
+    ball3 = Furball.new(5,2)
+    ball4 = Furball.new(4,4)
+
+    b = Board.new([ball1, ball2, ball3, ball4])
+    solver = FlingSolver.new(b)
+    solve = solver.solve
+
+    assert_equal(4, solve.size, solve)
+  end
 end

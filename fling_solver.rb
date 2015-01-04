@@ -15,7 +15,7 @@ class FlingSolver
       peek = stack.last
       possibilities = peek.board.possibleMoves
       previousBoard = peek.board
-      for index in 0..possibilities.size
+      for index in 0...possibilities.size
         move = possibilities[index]
         nextBoard = previousBoard.move(move.ball, move.direction)
         if !seenBoards.include?(nextBoard)
