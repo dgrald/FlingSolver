@@ -23,9 +23,9 @@ class Board
     for y in ROWS.downto(1)
       for x in 1.upto(COLUMNS)
         if board.include? Furball.new(x, y)
-          returnString << "0"
+          returnString << '0'
         else
-          returnString << "-"
+          returnString << '-'
         end
       end
       returnString << "\n"
@@ -33,18 +33,18 @@ class Board
     returnString
   end
 
-  def possibleMoves
+  def possible_moves
     possibilities = []
     for furball in @board
-      (possibilities << possibleMovesForBall(furball)).flatten!
+      (possibilities << possible_moves_for_ball(furball)).flatten!
     end
     possibilities
   end
 
-  def possibleMovesForBall(ball)
+  def possible_moves_for_ball(ball)
     #get the possible horizontal moves
     possibilities = []
-    row = getRow(ball.y)
+    row = row(ball.y)
     for otherBall in row
       if otherBall != ball
         #check left moves
@@ -61,7 +61,7 @@ class Board
     end
 
     #get the possible vertical moves
-    column = getColumn(ball.x)
+    column = column(ball.x)
     for otherBall in column
       if otherBall != ball
         #check up moves
@@ -118,40 +118,23 @@ class Board
 
   def is_ball_to_hit?(ball, direction)
     if direction == Directions::DOWN || direction == Directions::UP
-      isBallToHitInColumn?(ball, direction)
+      ball_to_hit_in_dimension?(ball, direction, column(ball.x), 1..COLUMNS)
     elsif direction == Directions::LEFT || direction == Directions::RIGHT
-      isBallToHitInRow?(ball, direction)
+      ball_to_hit_in_dimension?(ball, direction, row(ball.y), 1..ROWS)
     else
       raise ArgumentError("The direction #{direction} is invalid")
     end
   end
 
-  def isBallToHitInColumn?(ball, direction)
-
-    column = getColumn(ball.x)
-    for i in 1..COLUMNS
-      if column.include?(ball + (direction*i))
+  def ball_to_hit_in_dimension?(ball, direction, dimension, range)
+    range.each { |num|
+      if dimension.include?(ball + (direction * num))
         return true
       end
-    end
-    false
+    }
   end
 
-  def isBallToHitInRow?(ball, direction)
-    row = getRow(ball.y)
-    for i in 1..ROWS
-      if row.include?(ball + (direction*i))
-        return true
-      end
-    end
-    false
-  end
-
-  def ball_to_hit_in_dimension(ball, direction, dimension)
-
-  end
-
-  def getRow(y)
+  def row(y)
     row = []
     @board.each { |furball|
       if furball.y == y
@@ -161,7 +144,7 @@ class Board
     row.sort
   end
 
-  def getColumn(x)
+  def column(x)
     column = []
     @board.each { |furball|
       if furball.x == x
@@ -179,18 +162,18 @@ class Board
         if is_ball_to_hit?(ball, direction)
           #start moving the ball, which is handled by the moveBallInMotion method
           newBoard = @board.dup
-          moveBallInMotion(ball, direction, newBoard)
+          move_ball_in_motion(ball, direction, newBoard)
         end
       end
     end
   end
 
-  def moveBallInMotion(ball, direction, newBoard)
+  def move_ball_in_motion(ball, direction, newBoard)
     newPosition = ball + direction
     if newBoard.include?(newPosition)
       #the ball has struck another ball, so move the other ball
-      moveBallInMotion(newPosition, direction, newBoard)
-    elsif isBallOffBoard?(newPosition)
+      move_ball_in_motion(newPosition, direction, newBoard)
+    elsif ball_off_board?(newPosition)
       #the ball is off the board, so remove the ball from the board
       newBoard.delete(ball)
       return Board.new(newBoard)
@@ -199,11 +182,11 @@ class Board
       newBoard.delete(ball)
       newBoard.push(newPosition)
       newBoard.sort
-      moveBallInMotion(newPosition, direction, newBoard)
+      move_ball_in_motion(newPosition, direction, newBoard)
     end
   end
 
-  def isBallOffBoard?(ball)
+  def ball_off_board?(ball)
     if ball.x < 1 || ball.y < 1
       true
     elsif ball.x > COLUMNS || ball.y > ROWS

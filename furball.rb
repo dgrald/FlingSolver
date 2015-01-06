@@ -36,10 +36,3 @@ class Furball
   end
 
 end
-
-#ball = Furball.new(1,5)
-
-#dumped = Marshal.dump(ball)
-
-#ball2 = Marshal.load(dumped)
-#p ball2

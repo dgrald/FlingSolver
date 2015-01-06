@@ -46,7 +46,7 @@ class MyTest < MiniTest::Unit::TestCase
     move1 = Move.new(ball1, Directions::RIGHT)
     move2 = Move.new(ball2, Directions::LEFT)
 
-    possibleMoves = b.possibleMoves
+    possibleMoves = b.possible_moves
 
     assert(possibleMoves.include?(move1))
     assert(possibleMoves.include?(move2))
@@ -65,7 +65,7 @@ class MyTest < MiniTest::Unit::TestCase
     move3 = Move.new(ball2, Directions::LEFT)
     move4 = Move.new(ball3, Directions::LEFT)
 
-    possibleMoves = b.possibleMoves
+    possibleMoves = b.possible_moves
 
     assert(possibleMoves.include?(move1))
     assert(possibleMoves.include?(move2))
@@ -82,7 +82,7 @@ class MyTest < MiniTest::Unit::TestCase
 
     b = Board.new([ball1, ball2, ball3, ball4])
 
-    possibleMoves = b.possibleMoves
+    possibleMoves = b.possible_moves
 
     move1 = Move.new(ball1, Directions::UP)
     move2 = Move.new(ball4, Directions::LEFT)
@@ -108,7 +108,7 @@ class MyTest < MiniTest::Unit::TestCase
 
     b = Board.new([ball1, ball2, ball3])
 
-    assert(b.ball_in_row_or_column_in_way?(ball1, ball3, b.getRow(ball1.y)))
+    assert(b.ball_in_row_or_column_in_way?(ball1, ball3, b.row(ball1.y)))
   end
 
   def test_is_ball_horizontal_to_hit

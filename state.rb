@@ -6,4 +6,5 @@ class State
     @board = board
     @move = move
   end
+  
 end

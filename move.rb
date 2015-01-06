@@ -10,7 +10,7 @@ class Move
   end
 
   def to_s
-    @ball.to_s << ": " << @direction.to_s
+    @ball.to_s + ': ' + @direction.to_s
   end
 
   def ==(other)
