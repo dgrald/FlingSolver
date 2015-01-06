@@ -21,21 +21,21 @@ class MyTest < MiniTest::Unit::TestCase
 
   def test_ball_immediately_right
     b = Board.new([Furball.new(2, 2), Furball.new(1, 2)])
-    assert_equal(true, b.isBallImmediatelyAdjacent?(Furball.new(1, 2), Directions::RIGHT), b)
+    assert_equal(true, b.ball_immediately_adjacent?(Furball.new(1, 2), Directions::RIGHT), b)
   end
 
   def test_ball_left
     ball1 = Furball.new(2, 1)
     ball2 = Furball.new(4, 1)
     b = Board.new([ball1, ball2])
-    assert_equal(true, b.isBallRight?(ball1, ball2), b)
+    assert_equal(true, b.ball_right?(ball1, ball2), b)
   end
 
   def test_ball_right
     left = Furball.new(2, 1)
     right = Furball.new(4, 1)
     b = Board.new([left, right])
-    assert_equal(true, b.isBallRight?(left, right), b)
+    assert_equal(true, b.ball_right?(left, right), b)
   end
 
   def test_possible_moves
@@ -108,7 +108,7 @@ class MyTest < MiniTest::Unit::TestCase
 
     b = Board.new([ball1, ball2, ball3])
 
-    assert(b.isBallInRowInWay?(ball1, ball3, b.getRow(ball1.y)))
+    assert(b.ball_in_row_or_column_in_way?(ball1, ball3, b.getRow(ball1.y)))
   end
 
   def test_is_ball_horizontal_to_hit
@@ -118,7 +118,7 @@ class MyTest < MiniTest::Unit::TestCase
     b = Board.new([ball1, ball2])
 
     puts b.to_s
-    assert(b.isBallToHit?(ball1, Directions::RIGHT), b)
+    assert(b.is_ball_to_hit?(ball1, Directions::RIGHT), b)
 
   end
 
