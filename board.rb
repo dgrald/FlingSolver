@@ -20,24 +20,24 @@ class Board
 
   def to_s
     returnString = ''
-    for y in ROWS.downto(1)
-      for x in 1.upto(COLUMNS)
+    ROWS.downto(1).each { |y|
+      1.upto(COLUMNS).each { |x|
         if board.include? Furball.new(x, y)
           returnString << '0'
         else
           returnString << '-'
         end
-      end
+      }
       returnString << "\n"
-    end
+    }
     returnString
   end
 
   def possible_moves
     possibilities = []
-    for furball in @board
+    @board.each { |furball|
       (possibilities << possible_moves_for_ball(furball)).flatten!
-    end
+    }
     possibilities
   end
 
@@ -45,7 +45,7 @@ class Board
     #get the possible horizontal moves
     possibilities = []
     row = row(ball.y)
-    for otherBall in row
+    row.each { |otherBall|
       if otherBall != ball
         #check left moves
         if ball_left?(ball, otherBall) && valid_move?(ball, otherBall, Directions::LEFT, row)
@@ -58,11 +58,11 @@ class Board
         end
 
       end
-    end
+    }
 
     #get the possible vertical moves
     column = column(ball.x)
-    for otherBall in column
+    column.each { |otherBall|
       if otherBall != ball
         #check up moves
         if ball_above?(ball, otherBall) && valid_move?(ball, otherBall, Directions::UP, column)
@@ -74,7 +74,7 @@ class Board
           possibilities << Move.new(ball, Directions::DOWN)
         end
       end
-    end
+    }
 
     possibilities
 
